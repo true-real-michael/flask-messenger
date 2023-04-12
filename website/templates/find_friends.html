@@ -10,6 +10,7 @@
                 <li class="list-group list-group-item">
                     <form method="POST">
                     {{ user_c.name }}
+                        <input type="hidden" name="friend" value="{{ user_c.id }}">
                         <button type="submit" class="btn btn-secondary">add friend</button>
                     </form>
                 </li>

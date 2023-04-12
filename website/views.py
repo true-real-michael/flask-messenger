@@ -1,6 +1,6 @@
 import json
 
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, flash
 from flask_login import login_required, current_user
 from datetime import datetime
 
@@ -31,9 +31,18 @@ def home():
 #     return render_template("friends.html", user=current_user)
 
 
-@views.route('/find_friends')
+@views.route('/find_friends', methods=["GET", "POST"])
 @login_required
 def find_friends():
+    if request.method == "POST":
+        friend = request.form.get("friend")
+        friend_if_exists = User.query.filter_by(id=friend).first()
+        if friend_if_exists:
+            flash("this person is already your friend", category="success")
+        else:
+            current_user.befriend(friend)
+
+
     return render_template("find_friends.html", user=current_user, users=User.query.all())
 
 # @views.route('/delete-note', methods=['POST'])
