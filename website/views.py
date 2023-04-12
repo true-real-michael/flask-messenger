@@ -34,7 +34,7 @@ def home():
 @views.route('/find_friends')
 @login_required
 def find_friends():
-    return render_template("find_friends.html", users=User.query.all())
+    return render_template("find_friends.html", user=current_user, users=User.query.all())
 
 # @views.route('/delete-note', methods=['POST'])
 # def delete_note():

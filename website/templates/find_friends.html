@@ -1,14 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Friends{% endblock %}
+{% block title %}Find Friends{% endblock %}
 
 {% block content %}
 
-    <h1>Friends</h1>
+    <h1>Find Friends</h1>
     <ul class="list-group list-group-flush" id="notes">
-        {% for user in users %}
-            <li class="list-group list-group-item">
-                {{ user.email }}
-            </li>
+        {% for user_c in users %}
+            {% if user_c.id != user.id %}
+                <li class="list-group list-group-item">
+                    <form method="POST">
+                    {{ user_c.name }}
+                        <button type="submit" class="btn btn-secondary">add friend</button>
+                    </form>
+                </li>
+
+            {% endif %}
         {% endfor %}
     </ul>
 
