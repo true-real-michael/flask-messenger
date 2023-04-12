@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Friends{% endblock %}
+
+{% block content %}
+
+    <h1>Friends</h1>
+    <ul class="list-group list-group-flush" id="notes">
+        {% for friend in user.friends %}
+            <li class="list-group list-group-item">
+                {{ friend.email }}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

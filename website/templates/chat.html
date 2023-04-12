@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <h1 align="center">notes</h1>
+    <ul class="list-group list-group-flush" id="notes">
+        {% for message in chat.messages %}
+            <li class="list-group list-group-item">
+                {{ message.message_data }}
+            </li>
+        {% endfor %}
+    </ul>
+    <form method="POST">
+        <label for="note"></label><textarea name="note" id="note" class="form-control"></textarea>
+        <br/>
+        <div align="center">
+            <button type="submit" class="btn btn-primary">add note</button>
+        </div>
+    </form>
+
+{% endblock %}
