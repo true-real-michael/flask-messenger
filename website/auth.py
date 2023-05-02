@@ -2,8 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
-from .models import User
-from .services import db
+from .database import models
 
 auth = Blueprint('auth', __name__)
 
@@ -15,7 +14,8 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        user = User.query.filter_by(email=email).first()
+        # user = User.query.filter_by(email=email).first()
+        user = models.find_user_by_email(email)
         if user and check_password_hash(user.password_hash, password):
             flash('logged in successfully', category='success')
             login_user(user, remember=True)
@@ -42,7 +42,8 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        user = User.query.filter_by(email=email).first()
+        # user = User.query.filter_by(email=email).first()
+        user = models.find_user_by_email(email)
         if user:
             flash('user with this email already exists', category='error')
         elif len(email) < 4:
@@ -53,9 +54,10 @@ def signup():
             flash('passwords do not match', category='error')
         else:
 
-            new_user = User(email=email, name=name, password_hash=generate_password_hash(password1, method='sha256'))
-            db.session.add(new_user)
-            db.session.commit()
+            # new_user = User(email=email, name=name, password_hash=generate_password_hash(password1, method='sha256'))
+            new_user = models.create_user(email, generate_password_hash(password1, method='sha256'), name)
+            # db.session.add(new_user)
+            # db.session.commit()
 
             flash('account created', category='success')
             login_user(new_user, remember=True)
