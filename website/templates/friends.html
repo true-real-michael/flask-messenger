@@ -7,7 +7,7 @@
     <ul class="list-group list-group-flush" id="notes">
         {% for friend in user.friends %}
             <li class="list-group list-group-item">
-                {{ friend.email }}
+                <a href="/chats/{{ friend.id }}">{{ friend.email }}</a>
             </li>
         {% endfor %}
     </ul>

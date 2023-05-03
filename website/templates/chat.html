@@ -5,14 +5,14 @@
 
     <h1 align="center">Chat</h1>
     <ul class="list-group list-group-flush" id="notes">
-        {% for message in chat.messages %}
+        {% for message in messages %}
             <li class="list-group list-group-item">
-                {{ message.message_data }}
+                {{ message.user_src_id }} : {{ message.content }}
             </li>
         {% endfor %}
     </ul>
     <form method="POST">
-        <label for="note"></label><textarea name="message" id="message" class="form-control"></textarea>
+        <label for="note"></label><textarea name="content" id="content" class="form-control"></textarea>
         <br/>
         <div align="center">
             <button type="submit" class="btn btn-primary">Send</button>

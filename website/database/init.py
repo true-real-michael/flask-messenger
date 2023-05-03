@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 class Connection:
-    def __init__(self, path):
+    def __init__(self, path=Path('instance/data.db')):
         self.path = path
 
     def __enter__(self):
@@ -17,7 +17,7 @@ class Connection:
 def init():
     if not Path('instance/data.db').exists():
         Path('instance').mkdir(exist_ok=True)
-        with Connection(Path('instance/data.db')) as conn:
+        with Connection() as conn:
             cur = conn.cursor()
             cur.execute("create table user ("
                         "user_id integer primary key,"
@@ -33,7 +33,7 @@ def init():
                         "foreign key (user_b_id) references user(user_id)"
                         ")")
             cur.execute("create table message ("
-                        "messge_id integer primary key,"
+                        "message_id integer primary key,"
                         "user_src_id integer not null,"
                         "user_dst_id integer not null,"
                         "content text not null,"

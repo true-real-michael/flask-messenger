@@ -13,25 +13,21 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    # if request.method == 'POST':
-    #     note_data = request.form.get('note')
-    #     if note_data != '':
-    #         new_note = Note(note_data=note_data,
-    #                         note_date=datetime.now(),
-    #                         user_id=current_user.id)
-    #         db.session.add(new_note)
-    #         db.session.commit()
 
     return render_template("home.html", user=current_user)
 
 
-# @views.route('/chats/<int:id>', methods=["GET", "POST"])
-# @login_required
-# def chat(id=None):
-#     chat_val = Chat.query.filter_by()
-#     return render_template("chat.html", messages=messages)
-#
-#
+@views.route('/chats/<int:id>', methods=["GET", "POST"])
+@login_required
+def chat(id=None):
+    if request.method == "POST":
+        content = request.form.get("content")
+        models.send_message(current_user.id, id, content)
+
+    messages = current_user.chat_with(id)
+    return render_template("chat.html", messages=messages, user=current_user)
+
+
 @views.route('/friends')
 @login_required
 def friends():
