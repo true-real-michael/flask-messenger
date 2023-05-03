@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
-from .database import models
+from .database import db
 
 auth = Blueprint('auth', __name__)
 
@@ -14,8 +14,7 @@ def login():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        # user = User.query.filter_by(email=email).first()
-        user = models.find_user_by_email(email)
+        user = db.find_user_by_email(email)
         if user and check_password_hash(user.password_hash, password):
             flash('logged in successfully', category='success')
             login_user(user, remember=True)
@@ -42,7 +41,7 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        user = models.find_user_by_email(email)
+        user = db.find_user_by_email(email)
         if user:
             flash('user with this email already exists', category='error')
         elif len(email) < 4:
@@ -52,7 +51,7 @@ def signup():
         elif password1 != password2:
             flash('passwords do not match', category='error')
         else:
-            new_user = models.create_user(email, generate_password_hash(password1, method='sha256'), name)
+            new_user = db.create_user(email, generate_password_hash(password1, method='sha256'), name)
             flash('account created', category='success')
             login_user(new_user, remember=True)
             return redirect(url_for('views.home'))

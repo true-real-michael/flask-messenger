@@ -7,7 +7,7 @@
     <ul class="list-group list-group-flush" id="notes">
         {% for message in messages %}
             <li class="list-group list-group-item">
-                {{ message.user_src_id }} : {{ message.content }}
+                {{ message.user_src.name }} : {{ message.content }}
             </li>
         {% endfor %}
     </ul>
