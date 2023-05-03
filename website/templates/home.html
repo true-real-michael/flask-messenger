@@ -3,24 +3,6 @@
 
 {% block content %}
 
-    <h1 align="center">Chats</h1>
-    <ul class="list-group list-group-flush" id="notes">
-        {% for note in user.chats %}
-            <li class="list-group list-group-item">
-                {% if chat.user1_id == user.id %}
-                    {{ chat.user2_id }}
-                {% else %}
-                    {{ chat.user1_id }}
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    <form method="POST">
-        <label for="note"></label><textarea name="note" id="note" class="form-control"></textarea>
-        <br/>
-        <div align="center">
-            <button type="submit" class="btn btn-primary">add note</button>
-        </div>
-    </form>
+
 
 {% endblock %}
