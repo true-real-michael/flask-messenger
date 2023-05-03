@@ -14,3 +14,5 @@ Run
 ```shell
 docker run --rm -p 5000:5000 messenger
 ```
+
+The messenger 💀 will be available at [http://localhost:5000](http://localhost:5000)
