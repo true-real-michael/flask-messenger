@@ -13,23 +13,23 @@ class Database:
             with Connection(self.path) as conn:
                 cur = conn.cursor()
                 cur.execute("""create table user (user_id       integer primary key,
-                                                      email         text    not null,
-                                                      password_hash text    not null,
-                                                      name          text    not null)""")
+                                                  email         text    not null,
+                                                  password_hash text    not null,
+                                                  name          text    not null)""")
 
-                cur.execute("""create table friendship (user_a_id integer,
-                                                            user_b_id integer,
-                                                            primary key (user_a_id, user_b_id),
-                                                            foreign key (user_a_id) references user(user_id),
-                                                            foreign key (user_b_id) references user(user_id))""")
+                cur.execute("""create table follows (user_follower_id integer,
+                                                     user_followee_id integer,
+                                                     primary key (user_follower_id, user_followee_id),
+                                                     foreign key (user_follower_id) references user(user_id),
+                                                     foreign key (user_followee_id) references user(user_id))""")
 
                 cur.execute("""create table message (message_id  integer  primary key,
-                                                         user_src_id integer  not null,
-                                                         user_dst_id integer  not null,
-                                                         content     text     not null,
-                                                         timestamp   datetime not null,
-                                                         foreign key (user_src_id) references user(user_id),
-                                                         foreign key (user_dst_id) references user(user_id))""")
+                                                     user_src_id integer  not null,
+                                                     user_dst_id integer  not null,
+                                                     content     text     not null,
+                                                     timestamp   datetime not null,
+                                                     foreign key (user_src_id) references user(user_id),
+                                                     foreign key (user_dst_id) references user(user_id))""")
                 conn.commit()
 
         with Connection(self.path) as conn:
@@ -83,20 +83,20 @@ class Database:
     def friends_of(self, user_id):
         with Connection(self.path) as conn:
             cur = conn.cursor()
-            cur.execute(f"select * from friendship where user_a_id = {user_id}")
+            cur.execute(f"select * from follows where user_follower_id = {user_id}")
             fetch = cur.fetchall()
         return [self.find_user_by_id(fr[1]) for fr in fetch]
 
     def follow(self, follower_id, followee_id):
         with Connection(self.path) as conn:
             cur = conn.cursor()
-            cur.execute(f"insert into friendship values ({follower_id}, {followee_id})")
+            cur.execute(f"insert into follows values ({follower_id}, {followee_id})")
             conn.commit()
 
     def unfollow(self, follower_id, followee_id):
         with Connection(self.path) as conn:
             cur = conn.cursor()
-            cur.execute(f"delete from friendship where user_a_id = {follower_id} and user_b_id = {followee_id}")
+            cur.execute(f"delete from follows where user_follower_id = {follower_id} and user_followee_id = {followee_id}")
             conn.commit()
 
     def get_messages(self, user_a_id, user_b_id):
