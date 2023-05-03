@@ -93,6 +93,12 @@ class Database:
             cur.execute(f"insert into friendship values ({follower_id}, {followee_id})")
             conn.commit()
 
+    def unfollow(self, follower_id, followee_id):
+        with Connection(self.path) as conn:
+            cur = conn.cursor()
+            cur.execute(f"delete from friendship where user_a_id = {follower_id} and user_b_id = {followee_id}")
+            conn.commit()
+
     def get_messages(self, user_a_id, user_b_id):
         with Connection(self.path) as conn:
             cur = conn.cursor()

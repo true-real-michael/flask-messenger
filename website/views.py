@@ -32,8 +32,12 @@ def friends():
 @views.route('/find_friends', methods=["GET", "POST"])
 @login_required
 def find_friends():
+
     if request.method == "POST":
         friend_id = int(request.form.get("friend_id"))
-        db.follow(current_user.id, friend_id)
+        if db.find_user_by_id(friend_id) in db.friends_of(current_user.id):
+            db.unfollow(current_user.id, friend_id)
+        else:
+            db.follow(current_user.id, friend_id)
 
-    return render_template("find_friends.html", user=current_user, users=db.all_users())
+    return render_template("find_friends.html", user=current_user, users=db.all_users(), user_friends=db.friends_of(current_user.id))
