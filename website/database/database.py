@@ -1,7 +1,7 @@
 from pathlib import Path
 import time
 
-from .models import User, Message, Friendship
+from .models import User, Message
 from .connection import Connection
 
 
@@ -96,7 +96,8 @@ class Database:
     def unfollow(self, follower_id, followee_id):
         with Connection(self.path) as conn:
             cur = conn.cursor()
-            cur.execute(f"delete from follows where user_follower_id = {follower_id} and user_followee_id = {followee_id}")
+            cur.execute(
+                f"delete from follows where user_follower_id = {follower_id} and user_followee_id = {followee_id}")
             conn.commit()
 
     def get_messages(self, user_a_id, user_b_id):

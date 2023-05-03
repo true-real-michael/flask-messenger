@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify, flash
+from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
+
 from .database import db
 
 views = Blueprint('views', __name__)
@@ -32,7 +33,6 @@ def friends():
 @views.route('/find_friends', methods=["GET", "POST"])
 @login_required
 def find_friends():
-
     if request.method == "POST":
         friend_id = int(request.form.get("friend_id"))
         if db.find_user_by_id(friend_id) in db.friends_of(current_user.id):
@@ -40,4 +40,5 @@ def find_friends():
         else:
             db.follow(current_user.id, friend_id)
 
-    return render_template("find_friends.html", user=current_user, users=db.all_users(), user_friends=db.friends_of(current_user.id))
+    return render_template("find_friends.html", user=current_user, users=db.all_users(),
+                           user_friends=db.friends_of(current_user.id))

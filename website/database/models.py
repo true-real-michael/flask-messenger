@@ -1,5 +1,4 @@
 from flask_login import UserMixin
-from .connection import Connection
 
 
 class User(UserMixin):
