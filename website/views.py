@@ -1,10 +1,5 @@
-import json
-
 from flask import Blueprint, render_template, request, jsonify, flash
 from flask_login import login_required, current_user
-from datetime import datetime
-
-# from .models import User, friendship, Chat
 from .database import models
 
 views = Blueprint('views', __name__)
@@ -13,7 +8,6 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-
     return render_template("home.html", user=current_user)
 
 
@@ -42,14 +36,3 @@ def find_friends():
         current_user.befriend(models.find_user_by_id(friend_id))
 
     return render_template("find_friends.html", user=current_user, users=models.all_users())
-
-# @views.route('/delete-note', methods=['POST'])
-# def delete_note():
-#     data = json.loads(request.data)
-#     noteId = data['noteId']
-#     note = Note.query.get(noteId)
-#     if note and current_user.id == note.user_id:
-#         db.session.delete(note)
-#         db.session.commit()
-#
-#     return jsonify({})

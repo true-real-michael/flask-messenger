@@ -42,7 +42,6 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        # user = User.query.filter_by(email=email).first()
         user = models.find_user_by_email(email)
         if user:
             flash('user with this email already exists', category='error')
@@ -53,12 +52,7 @@ def signup():
         elif password1 != password2:
             flash('passwords do not match', category='error')
         else:
-
-            # new_user = User(email=email, name=name, password_hash=generate_password_hash(password1, method='sha256'))
             new_user = models.create_user(email, generate_password_hash(password1, method='sha256'), name)
-            # db.session.add(new_user)
-            # db.session.commit()
-
             flash('account created', category='success')
             login_user(new_user, remember=True)
             return redirect(url_for('views.home'))
