@@ -1,4 +1,4 @@
-## Goofy a$$ messenger 💀
+## Goofy ahh messenger 💀
 Feel free to explore
 
 ## Use with Docker
